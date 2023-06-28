@@ -1,0 +1,11 @@
+ideias
+
+_player
+
+compress audio files
+slideshow de screenshots de filmes
+    (maybe incluir funcionalidade screenshot)
+	
+_auth
+	eliminate queue and sessions files after logout
+	create script to manage these files if request arent being made to the apis

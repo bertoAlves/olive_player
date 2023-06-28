@@ -1,0 +1,156 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="olive">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="artists">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="artist" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="albums" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="album" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="tracks">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="track" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:positiveInteger" name="track_number"/>
+                                            <xs:element type="xs:string" name="track_title"/>
+                                            <xs:element type="xs:string" name="authors"/>
+                                            <xs:element type="xs:string" name="duration"/>
+                                            <xs:element type="xs:string" name="path"/>
+                                          </xs:sequence>
+                                          <xs:attribute type="xs:positiveInteger" name="id_track" use="required"/>
+										  <xs:attribute type="xs:int" name="used" use="required"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute type="xs:positiveInteger" name="id_album" use="required"/>
+                              <xs:attribute type="xs:string" name="title" use="required"/>
+                              <xs:attribute type="xs:short" name="year" use="required"/>
+                              <xs:attribute type="xs:string" name="album_path" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="singles" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="tracks">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="track" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:positiveInteger" name="track_number"/>
+                                      <xs:element type="xs:string" name="track_title"/>
+                                      <xs:element type="xs:string" name="authors"/>
+                                      <xs:element type="xs:string" name="duration"/>
+                                      <xs:element type="xs:string" name="path"/>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:positiveInteger" name="id_track" use="required"/>
+									<xs:attribute type="xs:int" name="used" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="singles_path"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:positiveInteger" name="id_artist" use="required"/>
+                  <xs:attribute type="xs:string" name="inFolderAs" use="required"/>
+                  <xs:attribute type="xs:string" name="artist_name" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>	
+		  <xs:unique name="unique-track_id">			
+			<xs:selector xpath=".//track"/>
+			<xs:field xpath="@id_track"/>
+		  </xs:unique>
+		  <xs:unique name="unique-id_album">
+		    <xs:selector xpath="artist/albums/album"/>
+		    <xs:field xpath="@id_album"/>
+		  </xs:unique>
+		  <xs:unique name="unique-album_title">
+		    <xs:selector xpath="artist/albums/album"/>
+		    <xs:field xpath="@title"/>
+		  </xs:unique>
+		  <xs:unique name="unique-album_path">
+		    <xs:selector xpath="artist/albums/album"/>
+		    <xs:field xpath="@album_path"/>
+		  </xs:unique>
+		  <xs:unique name="unique-singles_path">
+		    <xs:selector xpath="artist/singles"/>
+		    <xs:field xpath="@singles_path"/>
+		  </xs:unique>
+		  <xs:unique name="unique-id_artist">
+		    <xs:selector xpath="artist"/>
+		    <xs:field xpath="@id_artist"/>
+		  </xs:unique>
+		  <xs:unique name="unique-inFolderAs">
+		    <xs:selector xpath="artist"/>
+		    <xs:field xpath="@inFolderAs"/>
+		  </xs:unique>
+		  <xs:unique name="unique-artist_name">
+		    <xs:selector xpath="artist"/>
+		    <xs:field xpath="@artist_name"/>
+		  </xs:unique>
+        </xs:element>
+        <xs:element name="playlists">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="playlist" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="track_id" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:short" name="id" use="required"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:byte" name="id_playlist" use="required"/>
+                  <xs:attribute type="xs:string" name="groove_name" use="optional"/>
+                  <xs:attribute type="xs:string" name="name" use="required"/>
+                </xs:complexType>
+				<xs:unique name="unique-norep">
+				  <xs:selector xpath="track_id"/>
+				  <xs:field xpath="@id"/>
+				</xs:unique>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+		  <xs:unique name="unique-playlist_name">
+		    <xs:selector xpath="playlist"/>
+		    <xs:field xpath="@name"/>
+		  </xs:unique>
+		  <xs:unique name="unique-playlist_groove_name">
+		    <xs:selector xpath="playlist"/>
+		    <xs:field xpath="@groove_name"/>
+		  </xs:unique>
+		  <xs:unique name="unique-playlist_id">
+		    <xs:selector xpath="playlist"/>
+		    <xs:field xpath="@id_playlist"/>
+		  </xs:unique>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
